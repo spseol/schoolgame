@@ -86,7 +86,7 @@ class Spaceship(object):
         self.rozmer = min(self.image.width, self.image.height)/2
         
     def tick(self,dt):
-        for sym in klavesy:                       #chyba: KEY ERROR 16
+        for sym in klavesy:
             if sym==key.RIGHT:
                 self.rotation=self.rotation + 10
                 self.uhel=self.uhel + 10
