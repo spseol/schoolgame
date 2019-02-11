@@ -28,7 +28,7 @@ class Stone(object):
         self.rspeed=rspeed if rspeed is not None else random.randint(-100,100)
         
         num=random.choice(range(1,20))
-        self.image=pyglet.image.load("obrazky AST/PNG/meteors/{}.png".format(num))
+        self.image=pyglet.image.load("obrazkyAST/PNG/meteors/{}.png".format(num))
         self.image.anchor_x=self.image.width // 2
         self.image.anchor_y=self.image.height // 2
         
@@ -76,7 +76,7 @@ class Spaceship(object):
         self.uhel=0
         self.rotation=0
 
-        self.image=pyglet.image.load("obrazky AST/PNG/raketa1.png")
+        self.image=pyglet.image.load("obrazkyAST/PNG/raketa1.png")
         self.image.anchor_x = self.image.width // 2
         self.image.anchor_y = self.image.width // 2
         self.sprite = pyglet.sprite.Sprite(self.image, batch=batch)
