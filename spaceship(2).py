@@ -73,7 +73,6 @@ class Spaceship(object):
         self.y=window.height/2
         self.x_speed=0
         self.y_speed=0
-        self.uhel=0
         self.rotation=0
 
         self.image=pyglet.image.load("obrazkyAST/PNG/raketa1.png")
@@ -86,21 +85,20 @@ class Spaceship(object):
         self.rozmer = min(self.image.width, self.image.height)/2
         
     def tick(self,dt):
-        for sym in klavesy:                       #chyba: KEY ERROR 16
+        for sym in klavesy:
             if sym==key.RIGHT:
                 self.rotation=self.rotation + 10
-                self.uhel=self.uhel + 10
             elif sym==key.LEFT:
-                self.rotation=self.rotation - 10
-                self.uhel=self.uhel - 10    
+                self.rotation=self.rotation - 10    
             elif sym==key.UP:
                 self.x_speed=200
-                self.x=self.x + dt * self.x_speed*cos(pi/2 - radians(self.uhel))
+                self.y_speed=200
+                self.x=self.x + dt * self.x_speed*cos(pi/2 - radians(self.rotation))
                 if self.x +self.rozmer>=window.width or self.x - self.rozmer<=0:
                     self.x=self.sprite.x
                 else:
                     self.sprite.x=self.x
-                self.y=self.y + dt * self.y_speed*sin(pi/2 - radians(self.uhel))
+                self.y=self.y + dt * self.y_speed*sin(pi/2 - radians(self.rotation))
                 if self.y + self.rozmer>=window.height or self.y - self.rozmer<=0:
                     self.y= self.sprite.y
                 else:
@@ -108,12 +106,13 @@ class Spaceship(object):
                     
             elif sym==key.DOWN:
                 self.x_speed=200
-                self.x=self.x + dt * self.x_speed* (-cos(pi/2 - radians(self.uhel)))
+                self.y_speed=200
+                self.x=self.x + dt * self.x_speed* (-cos(pi/2 - radians(self.rotation)))
                 if self.x +self.rozmer>=window.width or self.x - self.rozmer<=0:
                     self.x=self.sprite.x
                 else:
                     self.sprite.x=self.x
-                self.y=self.y + dt * self.y_speed*(-sin(pi/2 - radians(self.uhel)))
+                self.y=self.y + dt * self.y_speed*(-sin(pi/2 - radians(self.rotation)))
                 if self.y + self.rozmer>=window.height or self.y - self.rozmer<=0:
                     self.y= self.sprite.y
                 else:
@@ -138,6 +137,4 @@ def on_key_release(sym, mod):
     global klavesy
     klavesy.remove(sym)
 
-pyglet.app.run()    
-        
-        
+pyglet.app.run()
