@@ -14,7 +14,6 @@ window = pyglet.window.Window(1000, 800)
 batch = pyglet.graphics.Batch()
 klavesy=set()
 
-
 class Stone(object):
     
     def __init__(self,x=None, y=None,direction=None,speed=None, rspeed=None):
