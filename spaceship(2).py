@@ -23,7 +23,7 @@ class Stone(object):
         
         self.direction=direction if direction is not None else random.randint(0,359)
         
-        self.speed=speed if speed is not None else random.randint(30,180)
+        self.speed=speed if speed is not None else random.randint(30,100)
         self.rspeed=rspeed if rspeed is not None else random.randint(-100,100)
         
         num=random.choice(range(1,20))
@@ -60,7 +60,7 @@ class Stone(object):
             return
 stones=[] 
        
-for i in range(30):
+for i in range(20):
     stone=Stone()
     pyglet.clock.schedule_interval(stone.tick, 1/30)
     stones.append(stone)
@@ -82,6 +82,7 @@ class Spaceship(object):
         self.sprite.x = self.x
         self.sprite.y = self.y
         self.rozmer = min(self.image.width, self.image.height)/2
+
         
     def tick(self,dt):
         for sym in klavesy:
@@ -116,8 +117,15 @@ class Spaceship(object):
                     self.y= self.sprite.y
                 else:
                     self.sprite.y=self.y  
-        self.sprite.rotation=self.rotation            
-                
+        self.sprite.rotation=self.rotation    
+
+        if abs(stone.x-self.x)< stone.image.width /2 and abs(stone.y-self.y)< stone.image.height /2:
+            self.x_speed=0
+            self.y_speed=0
+        else:
+            pass
+            
+            
 ship=Spaceship()                        
 pyglet.clock.schedule_interval(ship.tick, 1 / 30)
 
@@ -137,3 +145,4 @@ def on_key_release(sym, mod):
     klavesy.remove(sym)
 
 pyglet.app.run()
+
