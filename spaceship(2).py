@@ -14,7 +14,7 @@ window = pyglet.window.Window(1000, 800)
 batch = pyglet.graphics.Batch()
 klavesy=set()
 
-class Stone(object):
+class Stone():
     
     def __init__(self,x=None, y=None,direction=None,speed=None, rspeed=None):
         
@@ -27,7 +27,7 @@ class Stone(object):
         self.rspeed=rspeed if rspeed is not None else random.randint(-100,100)
         
         num=random.choice(range(1,20))
-        self.image=pyglet.image.load("obrazkyAST/PNG/meteors/{}.png".format(num))
+        self.image=pyglet.image.load("obrazkyAST/PNG/Meteors/{}.png".format(num))
         self.image.anchor_x=self.image.width // 2
         self.image.anchor_y=self.image.height // 2
         
@@ -36,12 +36,12 @@ class Stone(object):
         self.sprite.y=self.y
     
     def tick(self,dt):
-        self.bounce()
         self.x=self.x + dt * self.speed * cos(pi / 2 - radians(self.direction))
         self.sprite.x=self.x
         self.y=self.y + dt * self.speed * sin(pi / 2 - radians(self.direction))
         self.sprite.y=self.y
         self.sprite.rotatin= self.sprite.rotation + 0.01 * self.rspeed
+        self.bounce()
         
     def bounce(self):
         rozmer=min(self.image.width,self.image.height)/2
@@ -60,7 +60,7 @@ class Stone(object):
             return
 stones=[] 
        
-for i in range(20):
+for i in range(1):
     stone=Stone()
     pyglet.clock.schedule_interval(stone.tick, 1/30)
     stones.append(stone)
@@ -118,12 +118,6 @@ class Spaceship(object):
                 else:
                     self.sprite.y=self.y  
         self.sprite.rotation=self.rotation    
-
-        if abs(stone.x-self.x)< stone.image.width /2 and abs(stone.y-self.y)< stone.image.height /2:
-            self.x_speed=0
-            self.y_speed=0
-        else:
-            pass
             
             
 ship=Spaceship()                        
