@@ -139,4 +139,3 @@ def on_key_release(sym, mod):
     klavesy.remove(sym)
 
 pyglet.app.run()
-
