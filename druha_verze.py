@@ -43,7 +43,7 @@ class Meteor(All_objects):
         self.sprite.x=self.x
         self.sprite.y=self.y
         
-    def tick(self,dt):
+    def tick(self, dt):
         self.x=self.x + dt * self.speed * cos(pi / 2 - radians(self.direction))
         self.sprite.x=self.x
         self.y=self.y + dt * self.speed * sin(pi / 2 - radians(self.direction))
@@ -72,12 +72,13 @@ class Actions():
     
     meteors=[]
     def add_meteor(self,dt=None):
-        self.meteors.append(Meteor)
+        self.meteors.append(Meteor())
         
     def tick(self, dt):
         # pohnu kamenama
         for meteor in self.meteors:
             meteor.tick(dt)
+
 def ticky(dt):
     actions.tick(dt)
             
