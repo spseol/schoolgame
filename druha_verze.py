@@ -13,7 +13,7 @@ from math import sin, cos, radians, pi
 
 window = pyglet.window.Window(1000, 800)
 batch = pyglet.graphics.Batch()
-bg_batch = pyglet.graphics.Batch()
+#bg_batch = pyglet.graphics.Batch()
 
 class All_objects(pyglet.sprite.Sprite):
     
@@ -33,22 +33,17 @@ class Meteor(All_objects):
     def __init__(self, x=None, y=None, img_file=None, direction=None,speed=None, rspeed=None):
         if img_file is None:
             num=random.choice(range(1,20))
-            img_file=All_objects("obrazkyAST/PNG/Meteors/{}.png".format(num))
+            img_file=("obrazkyAST/PNG/Meteors/{}.png".format(num))
         super().__init__(img_file, x, y=window.height+20)
         
-        self.direction=direction if direction is not None else random.randint(0,359)
-        self.speed=speed if speed is not None else random.randint(30,100)
-        self.rspeed=rspeed if rspeed is not None else random.randint(-100,100)
-        
-        self.sprite.x=self.x
-        self.sprite.y=self.y
+        self.direction=direction if direction is not None else random.randint(150,220)
+        self.speed=speed if speed is not None else random.randint(30,80)
+        self.rspeed=rspeed if rspeed is not None else random.randint(-50,50)
         
     def tick(self,dt):
         self.x=self.x + dt * self.speed * cos(pi / 2 - radians(self.direction))
-        self.sprite.x=self.x
         self.y=self.y + dt * self.speed * sin(pi / 2 - radians(self.direction))
-        self.sprite.y=self.y
-        self.sprite.rotatin= self.sprite.rotation + 0.01 * self.rspeed
+        self.rotatin= self.rotation + dt * self.rspeed
         self.bounce()
         
     def bounce(self):
@@ -66,13 +61,13 @@ class Meteor(All_objects):
         if self.y - rozmer <=0:
             self.direction=random.randint(-80,80)
             return
-        
-        
+
+
 class Actions():
     
     meteors=[]
     def add_meteor(self,dt=None):
-        self.meteors.append(Meteor)
+        self.meteors.append(Meteor())
         
     def tick(self, dt):
         # pohnu kamenama
@@ -93,7 +88,6 @@ def on_draw():
     batch.draw()
 
 actions=Actions()
-actions.add_meteor()
 actions.add_meteor()
 actions.add_meteor()
 pyglet.clock.schedule_interval(ticky, 1/30)
