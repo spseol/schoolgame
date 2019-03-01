@@ -40,7 +40,7 @@ class Meteor(All_objects):
         self.speed=speed if speed is not None else random.randint(30,80)
         self.rspeed=rspeed if rspeed is not None else random.randint(-50,50)
         
-    def tick(self,dt):
+    def tick(self, dt):
         self.x=self.x + dt * self.speed * cos(pi / 2 - radians(self.direction))
         self.y=self.y + dt * self.speed * sin(pi / 2 - radians(self.direction))
         self.rotatin= self.rotation + dt * self.rspeed
@@ -73,6 +73,7 @@ class Actions():
         # pohnu kamenama
         for meteor in self.meteors:
             meteor.tick(dt)
+
 def ticky(dt):
     actions.tick(dt)
             
