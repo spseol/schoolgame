@@ -8,8 +8,7 @@ Created on Mon Feb 25 16:13:22 2019
 import pyglet
 import random
 from math import sin, cos, radians, pi
-#from pyglet.window import key
-
+from pyglet.window import key
 
 window = pyglet.window.Window(1000, 800)
 batch = pyglet.graphics.Batch()
@@ -27,6 +26,33 @@ class All_objects(pyglet.sprite.Sprite):
         self.x = x if x is not None else random.randint(0, window.width)
         self.y = y if y is not None else random.randint(0, window.height)
         
+class Spaceship(All_objects):
+    
+    def __init__(self, x=None, y=None, x_speed=None, y_speed=None, rotation=None):
+        
+        self.keys=set()
+        super().__init__("obrazkyAST/PNG/raketa1.png", x=window.width/2, y=77)
+        self.x_speed=0
+        self.y_speed=0
+        self.rotation=0
+        self.rozmer = min(self.image.width, self.image.height)/2
+        
+    def tick(self,dt):
+        for sym in self.keys:
+            if sym==key.RIGHT:
+                self.rotation=self.rotation + 10
+            elif sym==key.LEFT:
+                self.rotation=self.rotation - 10    
+            elif sym==key.UP:
+                self.x_speed=200
+                self.y_speed=200
+                self.x=self.x + dt * self.x_speed*cos(pi/2 - radians(self.rotation))
+                self.y=self.y + dt * self.y_speed*sin(pi/2 - radians(self.rotation))
+            elif sym==key.DOWN:
+                self.x_speed=200
+                self.y_speed=200
+                self.x=self.x + dt + self.x_speed* (-cos(pi/2 - radians(self.rotation)))
+                self.y=self.y + dt + self.y_speed*(-sin(pi/2 - radians(self.rotation)))
 
 class Meteor(All_objects):
     
@@ -66,18 +92,22 @@ class Actions():
                 
 def ticky(dt):
     actions.tick(dt)
+    ship.tick(dt)
             
 @window.event
 def on_key_press(sym, mod):
-    global klavesy
-    klavesy.add(sym)
+    ship.keys.add(sym)
 
+@window.event
+def on_key_release(sym, mod):
+    ship.keys.remove(sym)
 
 @window.event
 def on_draw():
     window.clear()
     batch.draw()
 
+ship=Spaceship()
 actions=Actions()
 actions.add_meteor()
 actions.add_meteor()
