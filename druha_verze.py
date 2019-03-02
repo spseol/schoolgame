@@ -30,7 +30,7 @@ class All_objects(pyglet.sprite.Sprite):
 
 class Meteor(All_objects):
     
-    def __init__(self, x=None, y=None, img_file=None, direction=None,speed=None, rspeed=None):
+    def __init__(self, x=None, y=None, img_file=None, direction=None,speed=None, rspeed=None, rozmer=None):
         if img_file is None:
             num=random.choice(range(1,20))
             img_file=("obrazkyAST/PNG/Meteors/{}.png".format(num))
@@ -39,41 +39,31 @@ class Meteor(All_objects):
         self.direction=direction if direction is not None else random.randint(150,220)
         self.speed=speed if speed is not None else random.randint(30,80)
         self.rspeed=rspeed if rspeed is not None else random.randint(-50,50)
+        self.rozmer=min(self.image.width,self.image.height)/2
         
     def tick(self, dt):
         self.x=self.x + dt * self.speed * cos(pi / 2 - radians(self.direction))
         self.y=self.y + dt * self.speed * sin(pi / 2 - radians(self.direction))
         self.rotatin= self.rotation + dt * self.rspeed
-        self.bounce()
         
-    def bounce(self):
-        rozmer=min(self.image.width,self.image.height)/2
-        
-        if self.x + rozmer >= window.width:
-            self.direction=random.randint(190,350)
-            return
-        if self.x - rozmer  <=0:
-            self.direction=random.randint(10,170)
-            return
-        if self.y + rozmer >= window.height:
-            self.direction=random.randint(100,260)
-            return
-        if self.y - rozmer <=0:
-            self.direction=random.randint(-80,80)
-            return
-
+        if self.x + self.rozmer> window.height +200:
+            del(self)
+        elif self.x + self.rozmer < -200:
+            del(self)
+        elif self.y + self.rozmer < -200:
+            del(self)
 
 class Actions():
-    
+
     meteors=[]
     def add_meteor(self,dt=None):
         self.meteors.append(Meteor())
-        
+              
     def tick(self, dt):
         # pohnu kamenama
         for meteor in self.meteors:
             meteor.tick(dt)
-
+                
 def ticky(dt):
     actions.tick(dt)
             
