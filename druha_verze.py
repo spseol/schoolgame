@@ -12,7 +12,6 @@ from pyglet.window import key
 
 window = pyglet.window.Window(1000, 800)
 batch = pyglet.graphics.Batch()
-#bg_batch = pyglet.graphics.Batch()
 
 class All_objects(pyglet.sprite.Sprite):
     
@@ -51,8 +50,8 @@ class Spaceship(All_objects):
             elif sym==key.DOWN:
                 self.x_speed=200
                 self.y_speed=200
-                self.x=self.x + dt + self.x_speed* (-cos(pi/2 - radians(self.rotation)))
-                self.y=self.y + dt + self.y_speed*(-sin(pi/2 - radians(self.rotation)))
+                self.x=self.x + dt * self.x_speed* (-cos(pi/2 - radians(self.rotation)))
+                self.y=self.y + dt * self.y_speed*(-sin(pi/2 - radians(self.rotation)))
 
 class Meteor(All_objects):
     
@@ -72,7 +71,7 @@ class Meteor(All_objects):
         self.y=self.y + dt * self.speed * sin(pi / 2 - radians(self.direction))
         self.rotatin= self.rotation + dt * self.rspeed
         
-        if self.x + self.rozmer> window.height +200:
+        if self.x + self.rozmer> window.width + 200:
             del(self)
         elif self.x + self.rozmer < -200:
             del(self)
@@ -89,7 +88,11 @@ class Actions():
         # pohnu kamenama
         for meteor in self.meteors:
             meteor.tick(dt)
-                
+            vzdalenost = ((meteor.x - ship.x)**2 + (meteor.y - ship.y)**2)**0.5
+            if vzdalenost - meteor.rozmer/2 <=0:
+                ship.x_speed=0
+                ship.y_speed=0
+
 def ticky(dt):
     actions.tick(dt)
     ship.tick(dt)
