@@ -52,7 +52,7 @@ class Spaceship(All_objects):
                 self.y_speed=200
                 self.x=self.x + dt * self.x_speed* (-cos(pi/2 - radians(self.rotation)))
                 self.y=self.y + dt * self.y_speed*(-sin(pi/2 - radians(self.rotation)))
-
+        
 class Meteor(All_objects):
     
     def __init__(self, x=None, y=None, img_file=None, direction=None,speed=None, rspeed=None, rozmer=None):
@@ -78,6 +78,7 @@ class Meteor(All_objects):
         elif self.y + self.rozmer < -200:
             del(self)
 
+
 class Actions():
 
     meteors=[]
@@ -88,13 +89,17 @@ class Actions():
         # pohnu kamenama
         for meteor in self.meteors:
             meteor.tick(dt)
-            vzdalenost = ((meteor.x - ship.x)**2 + (meteor.y - ship.y)**2)**0.5
-            if vzdalenost - meteor.rozmer/2 <=0:
-                ship.x_speed=0
-                ship.y_speed=0
-            else:
-                continue
-
+            distance = ((meteor.x - ship.x)**2 + (meteor.y - ship.y)**2)**0.5
+            if distance - meteor.rozmer/2 <=0:
+                self.colision()
+                
+    def colision(self):
+        pyglet.clock.unschedule(ticky)
+        pyglet.clock.unschedule(actions.add_meteor)  
+        ship.x_speed=0
+        ship.y_speed=0
+        print("Prohrál jsi")          
+        
 def ticky(dt):
     actions.tick(dt)
     ship.tick(dt)
