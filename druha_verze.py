@@ -92,6 +92,8 @@ class Actions():
             if vzdalenost - meteor.rozmer/2 <=0:
                 ship.x_speed=0
                 ship.y_speed=0
+            else:
+                continue
 
 def ticky(dt):
     actions.tick(dt)
