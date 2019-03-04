@@ -82,6 +82,8 @@ class Meteor(All_objects):
 class Actions():
 
     meteors=[]
+    lasers=[]
+    
     def add_meteor(self,dt=None):
         self.meteors.append(Meteor())
               
