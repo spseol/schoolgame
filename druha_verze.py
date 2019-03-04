@@ -43,8 +43,8 @@ class Spaceship(All_objects):
             elif sym==key.LEFT:
                 self.rotation=self.rotation - 10    
             elif sym==key.UP:
-                self.x_speed=200
-                self.y_speed=200
+                self.x_speed = 900
+                self.y_speed = 900
                 self.x=self.x + dt * self.x_speed*cos(pi/2 - radians(self.rotation))
                 self.y=self.y + dt * self.y_speed*sin(pi/2 - radians(self.rotation))
             elif sym==key.DOWN:
@@ -62,9 +62,12 @@ class Meteor(All_objects):
         super().__init__(img_file, x, y=window.height+20)
         
         self.direction=direction if direction is not None else random.randint(150,220)
-        self.speed=speed if speed is not None else random.randint(30,80)
+        self.speed=speed if speed is not None else random.randint(300,800)
         self.rspeed=rspeed if rspeed is not None else random.randint(-50,50)
         self.rozmer=min(self.image.width,self.image.height)/2
+
+    def __del__():
+        print(id(self))
         
     def tick(self, dt):
         self.x=self.x + dt * self.speed * cos(pi / 2 - radians(self.direction))
