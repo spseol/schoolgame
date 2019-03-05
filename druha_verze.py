@@ -93,6 +93,9 @@ class Laser(All_objects):
         
     def tick(self, dt):
         self.y = self.y + dt * self.speed
+        for sym in ship.keys:
+            if sym == key.SPACE:
+                actions.add_laser()
         
         if self.y > window.height + 200:
             actions.lasers.remove(self)
@@ -113,7 +116,7 @@ class Actions():
         for meteor in self.meteors:
             meteor.tick(dt)
             distance = ((meteor.x - ship.x)**2 + (meteor.y - ship.y)**2)**0.5
-            if distance - meteor.rozmer/2 -55 <=0:
+            if distance - meteor.rozmer/2 -45 <=0:
                 self.colision()
                 
             for laser in self.lasers:
@@ -138,8 +141,8 @@ def ticky(dt):
 @window.event
 def on_key_press(sym, mod):
     ship.keys.add(sym)
-    if sym == key.SPACE:
-        actions.add_laser()
+#    if sym == key.SPACE:
+#        actions.add_laser()
 
 @window.event
 def on_key_release(sym, mod):
