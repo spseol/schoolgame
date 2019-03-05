@@ -43,8 +43,8 @@ class Spaceship(All_objects):
             elif sym==key.LEFT:
                 self.rotation=self.rotation - 10    
             elif sym==key.UP:
-                self.x_speed = 900
-                self.y_speed = 900
+                self.x_speed = 350
+                self.y_speed = 350
                 self.x=self.x + dt * self.x_speed*cos(pi/2 - radians(self.rotation))
                 self.y=self.y + dt * self.y_speed*sin(pi/2 - radians(self.rotation))
             elif sym==key.DOWN:
@@ -56,18 +56,16 @@ class Spaceship(All_objects):
 class Meteor(All_objects):
     
     def __init__(self, x=None, y=None, img_file=None, direction=None,speed=None, rspeed=None, rozmer=None):
+        
         if img_file is None:
             num=random.choice(range(1,20))
             img_file=("obrazkyAST/PNG/Meteors/{}.png".format(num))
         super().__init__(img_file, x, y=window.height+20)
         
         self.direction=direction if direction is not None else random.randint(150,220)
-        self.speed=speed if speed is not None else random.randint(300,800)
+        self.speed=speed if speed is not None else random.randint(100,400)
         self.rspeed=rspeed if rspeed is not None else random.randint(-50,50)
         self.rozmer=min(self.image.width,self.image.height)/2
-
-    def __del__():
-        print(id(self))
         
     def tick(self, dt):
         self.x=self.x + dt * self.speed * cos(pi / 2 - radians(self.direction))
@@ -75,12 +73,29 @@ class Meteor(All_objects):
         self.rotatin= self.rotation + dt * self.rspeed
         
         if self.x + self.rozmer> window.width + 200:
-            del(self)
+            actions.meteors.remove(self)
         elif self.x + self.rozmer < -200:
-            del(self)
+            actions.meteors.remove(self)
         elif self.y + self.rozmer < -200:
-            del(self)
+            actions.meteors.remove(self)
+            
+    def __del__(self):
+        print(id(self))
+        
+class Laser(All_objects):
 
+    def __init__(self, img_file=None, speed=None, direction=None):
+        
+        super().__init__("obrazkyAST/PNG/Effects/fire01.png", x=ship.x, y=ship.y+70, anchor_y=self.height)
+        
+        self.direction=0
+        self.speed=1000
+        
+    def tick(self, dt):
+        self.y = self.y + dt * self.speed
+        
+        if self.y > window.height + 200:
+            actions.lasers.remove(self)
 
 class Actions():
 
@@ -89,14 +104,25 @@ class Actions():
     
     def add_meteor(self,dt=None):
         self.meteors.append(Meteor())
+        
+    def add_laser(self, dt=None):
+        self.lasers.append(Laser())    
               
     def tick(self, dt):
         # pohnu kamenama
         for meteor in self.meteors:
             meteor.tick(dt)
             distance = ((meteor.x - ship.x)**2 + (meteor.y - ship.y)**2)**0.5
-            if distance - meteor.rozmer/2 <=0:
+            if distance - meteor.rozmer/2 -55 <=0:
                 self.colision()
+                
+            for laser in self.lasers:
+                if laser.y >= meteor.y and laser.x >= (meteor.x - meteor.rozmer/3) and laser.x <= (meteor.x + meteor.rozmer/3):
+                    self.lasers.remove(laser)
+                    self.meteors.remove(meteor)
+                    
+        for laser in self.lasers:
+            laser.tick(dt)
                 
     def colision(self):
         pyglet.clock.unschedule(ticky)
@@ -112,6 +138,8 @@ def ticky(dt):
 @window.event
 def on_key_press(sym, mod):
     ship.keys.add(sym)
+    if sym == key.SPACE:
+        actions.add_laser()
 
 @window.event
 def on_key_release(sym, mod):
