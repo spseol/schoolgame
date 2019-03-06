@@ -135,12 +135,13 @@ class Actions():
         for meteor in self.meteors:
             meteor.tick(dt)
             distance = ((meteor.x - ship.x)**2 + (meteor.y - ship.y)**2)**0.5
-            if distance - meteor.rozmer / 2 - 45 <= 0:
+            if distance - meteor.rozmer / 2 - 43 <= 0:
                 self.colision()
 
             for laser in self.lasers:
                 laser.tick(dt)
-                if laser.y == meteor.y and laser.x == meteor.x:
+                distance2 = ((meteor.x - laser.x)**2 + (meteor.y - laser.y)**2)**0.5
+                if distance2 - meteor.rozmer / 2 -20 <= 0:
                     self.lasers.remove(laser)
                     laser.delete()
                     self.meteors.remove(meteor)
