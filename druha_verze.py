@@ -12,6 +12,7 @@ from pyglet.window import key
 
 window = pyglet.window.Window(1000, 800)
 batch = pyglet.graphics.Batch()
+bg_batch = pyglet.graphics.Batch()
 
 
 class All_objects(pyglet.sprite.Sprite):
@@ -63,56 +64,60 @@ class Spaceship(All_objects):
 
 class Meteor(All_objects):
 
-    def __init__(self, x=None, y=None, img_file=None, direction=None, speed=None, rspeed=None, rozmer=None):
+    def __init__(self, x=None, y=None, img_file=None, x_speed=None, y_speed=None, rspeed=None, rozmer=None):
 
         if img_file is None:
             num = random.choice(range(1, 20))
             img_file = ("obrazkyAST/PNG/Meteors/{}.png".format(num))
         super().__init__(img_file, x, y=window.height + 20)
 
-        self.direction = direction if direction is not None else random.randint(
-            150, 220)
-        self.speed = speed if speed is not None else random.randint(100, 400)
+        self.x_speed = x_speed if x_speed is not None else random.randint(30, 180)
+        self.y_speed = y_speed if y_speed is not None else random.randint(-180, -30)
         self.rspeed = rspeed if rspeed is not None else random.randint(-50, 50)
         self.rozmer = min(self.image.width, self.image.height) / 2
 
     def tick(self, dt):
-        self.x = self.x + dt * self.speed * \
-            cos(pi / 2 - radians(self.direction))
-        self.y = self.y + dt * self.speed * \
-            sin(pi / 2 - radians(self.direction))
-        self.rotatin = self.rotation + dt * self.rspeed
+        self.x = self.x + dt * self.x_speed
+        self.y = self.y + dt * self.y_speed
+        self.rotation = self.rotation + dt * self.rspeed
 
         if self.x + self.rozmer > window.width + 200:
             actions.meteors.remove(self)
+            self.delete()
         elif self.x + self.rozmer < -200:
             actions.meteors.remove(self)
+            self.delete()
         elif self.y + self.rozmer < -200:
             actions.meteors.remove(self)
+            self.delete()
 
     def __del__(self):
-        print(id(self))
+        print("Meteor smazán")
 
 
 class Laser(All_objects):
 
-    def __init__(self, img_file=None, speed=None, direction=None):
+    def __init__(self, img_file=None, speed=None, rotation=None):
 
         super().__init__("obrazkyAST/PNG/Effects/fire01.png",
                          x=ship.x, y=ship.y + 70)
         self.anchor_y=self.height
-        self.rotation = 90
         self.speed = 1000
+        self.rozmer = min(self.image.width, self.image.height) / 2
+        self.rotation = ship.rotation
 
     def tick(self, dt):
-        self.y = self.y + dt * self.speed
-        # for sym in ship.keys:
-        #     if sym == key.SPACE:
-        #         actions.add_laser()
+        self.x = self.x + dt * self.speed * \
+            cos(pi / 2 - radians(self.rotation))
+        self.y = self.y + dt * self.speed * \
+            sin(pi / 2 - radians(self.rotation))
 
-        if self.y > window.height + 200:
+        if self.y + self.rozmer > window.height + 200:
             actions.lasers.remove(self)
+            self.delete()
 
+    def __del__(self):
+        print("Laser smazán")
 
 class Actions():
 
@@ -134,12 +139,13 @@ class Actions():
                 self.colision()
 
             for laser in self.lasers:
+                laser.tick(dt)
                 if laser.y >= meteor.y and laser.x >= (meteor.x - meteor.rozmer / 3) and laser.x <= (meteor.x + meteor.rozmer / 3):
                     self.lasers.remove(laser)
+                    laser.delete()
                     self.meteors.remove(meteor)
+                    meteor.delete()
 
-        for laser in self.lasers:
-            laser.tick(dt)
 
     def colision(self):
         pyglet.clock.unschedule(ticky)
@@ -169,6 +175,7 @@ def on_key_release(sym, mod):
 @window.event
 def on_draw():
     window.clear()
+    bg_batch.draw()
     batch.draw()
 
 ship = Spaceship()
