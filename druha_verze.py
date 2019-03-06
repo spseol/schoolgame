@@ -100,7 +100,7 @@ class Laser(All_objects):
     def __init__(self, img_file=None, speed=None, rotation=None):
 
         super().__init__("obrazkyAST/PNG/Effects/fire01.png",
-                         x=ship.x, y=ship.y + 70)
+                         x=ship.x, y=ship.y)
         self.anchor_y=self.height
         self.speed = 1000
         self.rozmer = min(self.image.width, self.image.height) / 2
@@ -140,7 +140,7 @@ class Actions():
 
             for laser in self.lasers:
                 laser.tick(dt)
-                if laser.y >= meteor.y and laser.x >= (meteor.x - meteor.rozmer / 3) and laser.x <= (meteor.x + meteor.rozmer / 3):
+                if laser.y == meteor.y and laser.x == meteor.x:
                     self.lasers.remove(laser)
                     laser.delete()
                     self.meteors.remove(meteor)
