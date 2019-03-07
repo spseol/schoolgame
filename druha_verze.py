@@ -67,7 +67,7 @@ class Meteor(All_objects):
     def __init__(self, x=None, y=None, img_file=None, x_speed=None, y_speed=None, rspeed=None, rozmer=None):
 
         if img_file is None:
-            num = random.choice(range(1, 16))
+            num = random.choice(range(1, 20))
             img_file = ("obrazkyAST/PNG/Meteors/{}.png".format(num))
         super().__init__(img_file, x, y=window.height + 20)
 
@@ -142,16 +142,12 @@ class Actions():
             for laser in self.lasers:
                 laser.tick(dt)
                 distance2 = ((meteor.x - laser.x)**2 + (meteor.y - laser.y)**2)**0.5
-                if distance2 - meteor.rozmer / 2 - 20 <= 0:
+                if (distance2 - meteor.rozmer) <= 0:
                     self.lasers.remove(laser)
                     laser.delete()
                     self.meteors.remove(meteor)
                     meteor.delete()
-                elif distance2 - meteor.rozmer / 2 + 20 <= 0:
-                    self.lasers.remove(laser)
-                    laser.delete()
-                    self.meteors.remove(meteor)
-                    meteor.delete()
+                    
 
     def colision(self):
         pyglet.clock.unschedule(ticky)
