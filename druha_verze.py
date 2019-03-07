@@ -10,7 +10,7 @@ import random
 from math import sin, cos, radians, pi
 from pyglet.window import key
 
-window = pyglet.window.Window(1000, 800)
+window = pyglet.window.Window(1250, 1000)
 batch = pyglet.graphics.Batch()
 bg_batch = pyglet.graphics.Batch()
 
@@ -47,8 +47,8 @@ class Spaceship(All_objects):
             elif sym == key.LEFT:
                 self.rotation = self.rotation - 10
             elif sym == key.UP:
-                self.x_speed = 350
-                self.y_speed = 350
+                self.x_speed = 400
+                self.y_speed = 400
                 self.x = self.x + dt * self.x_speed * \
                     cos(pi / 2 - radians(self.rotation))
                 self.y = self.y + dt * self.y_speed * \
@@ -67,7 +67,7 @@ class Meteor(All_objects):
     def __init__(self, x=None, y=None, img_file=None, x_speed=None, y_speed=None, rspeed=None, rozmer=None):
 
         if img_file is None:
-            num = random.choice(range(1, 20))
+            num = random.choice(range(1, 16))
             img_file = ("obrazkyAST/PNG/Meteors/{}.png".format(num))
         super().__init__(img_file, x, y=window.height + 20)
 
@@ -101,7 +101,8 @@ class Laser(All_objects):
 
         super().__init__("obrazkyAST/PNG/Effects/fire01.png",
                          x=ship.x, y=ship.y)
-        self.anchor_y=self.height
+        self.anchr_x = self.width // 2
+        self.anchor_y = self.height
         self.speed = 1000
         self.rozmer = min(self.image.width, self.image.height) / 2
         self.rotation = ship.rotation
@@ -141,12 +142,16 @@ class Actions():
             for laser in self.lasers:
                 laser.tick(dt)
                 distance2 = ((meteor.x - laser.x)**2 + (meteor.y - laser.y)**2)**0.5
-                if distance2 - meteor.rozmer / 2 -20 <= 0:
+                if distance2 - meteor.rozmer / 2 - 20 <= 0:
                     self.lasers.remove(laser)
                     laser.delete()
                     self.meteors.remove(meteor)
                     meteor.delete()
-
+                elif distance2 - meteor.rozmer / 2 + 20 <= 0:
+                    self.lasers.remove(laser)
+                    laser.delete()
+                    self.meteors.remove(meteor)
+                    meteor.delete()
 
     def colision(self):
         pyglet.clock.unschedule(ticky)
@@ -160,6 +165,16 @@ def ticky(dt):
     actions.tick(dt)
     ship.tick(dt)
 
+bg = pyglet.image.load("obrazkyAST/Backgrounds/blue.png") 
+x = 0
+bg_sprites = ()
+
+while x < window.width:
+    y = 0
+    while y < window.height:
+        bg_sprites += (pyglet.sprite.Sprite(bg, x=x, y=y, batch=bg_batch),)
+        y += bg.height
+    x += bg.width
 
 @window.event
 def on_key_press(sym, mod):
