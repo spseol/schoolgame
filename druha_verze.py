@@ -138,6 +138,13 @@ class Actions():
             distance = ((meteor.x - ship.x)**2 + (meteor.y - ship.y)**2)**0.5
             if distance - meteor.rozmer / 2 - 43 <= 0:
                 self.colision()
+                """
+                label = pyglet.text.Label("Prohrál jsi",
+                          font_name="Times New Roman",
+                          font_size=36,
+                          x=window.width//2, y=window.height//2,
+                          anchor_x="center", anchor_y="center")
+                """
 
             for laser in self.lasers:
                 laser.tick(dt)
@@ -155,13 +162,24 @@ class Actions():
         ship.x_speed = 0
         ship.y_speed = 0
         print("Prohrál jsi")
+        if ship.sym == key.R:
+            self.reset()
+        
+    def reset(self):
+        for meteor in self.meteors:
+            self.meteors.remove(meteor)
+            meteor.delete()
+        ship.x = window.width / 2
+        ship.y = 77
+        pyglet.clock.schedule_interval(ticky, 1/30)
+        pyglet.clock.schedule_interval(actions.add_meteor, 1/3)
 
 
 def ticky(dt):
     actions.tick(dt)
     ship.tick(dt)
 
-bg = pyglet.image.load("obrazkyAST/Backgrounds/blue.png") 
+bg = pyglet.image.load("obrazkyAST/Backgrounds/blue.png")
 x = 0
 bg_sprites = ()
 
@@ -189,6 +207,8 @@ def on_draw():
     window.clear()
     bg_batch.draw()
     batch.draw()
+#    label.draw()
+    
 
 ship = Spaceship()
 actions = Actions()
