@@ -124,6 +124,7 @@ class Actions():
 
     meteors = []
     lasers = []
+    points=0
 
     def add_meteor(self, dt=None):
         self.meteors.append(Meteor())
@@ -154,6 +155,7 @@ class Actions():
                     laser.delete()
                     self.meteors.remove(meteor)
                     meteor.delete()
+                    self.points = self.points + 10
                     
 
     def colision(self):
@@ -162,8 +164,12 @@ class Actions():
         ship.x_speed = 0
         ship.y_speed = 0
         print("Prohrál jsi")
-        if ship.sym == key.R:
-            self.reset()
+        print("Dosáhl jsi", self.points, "bodů")
+        while 1:
+            for sym in ship.keys:
+                if sym == key.R:
+                    self.reset()
+
         
     def reset(self):
         for meteor in self.meteors:
