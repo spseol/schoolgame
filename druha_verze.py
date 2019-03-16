@@ -38,9 +38,10 @@ class Spaceship(All_objects):
         self.x_speed = 0
         self.y_speed = 0
         self.rotation = 0
-        self.rozmer = min(self.image.width, self.image.height) / 2
+        self.size = min(self.image.width, self.image.height) / 2
 
     def tick(self, dt):
+        self.bounce()
         for sym in self.keys:
             if sym == key.RIGHT:
                 self.rotation = self.rotation + 10
@@ -60,6 +61,16 @@ class Spaceship(All_objects):
                     (-cos(pi / 2 - radians(self.rotation)))
                 self.y = self.y + dt * self.y_speed * \
                     (-sin(pi / 2 - radians(self.rotation)))
+                    
+    def bounce(self):
+        if self.x + self.size > window.width:
+            self.x = window.width - self.size
+        if self.x - self.size < 0:
+            self.x = self.size
+        if self.y + self.size > window.height:
+            self.y = window.height - self.size
+        if self.y - self.size < 0:
+            self.y = self.size
 
 
 class Meteor(All_objects):
@@ -74,22 +85,34 @@ class Meteor(All_objects):
         self.x_speed = x_speed if x_speed is not None else random.randint(30, 180)
         self.y_speed = y_speed if y_speed is not None else random.randint(-180, -30)
         self.rspeed = rspeed if rspeed is not None else random.randint(-50, 50)
-        self.rozmer = min(self.image.width, self.image.height) / 2
+        self.size = min(self.image.width, self.image.height) / 2
 
     def tick(self, dt):
+        self.bounce()
         self.x = self.x + dt * self.x_speed
         self.y = self.y + dt * self.y_speed
         self.rotation = self.rotation + dt * self.rspeed
 
-        if self.x + self.rozmer > window.width + 200:
+        if self.x + self.size > window.width + 200:
             actions.meteors.remove(self)
             self.delete()
-        elif self.x + self.rozmer < -200:
+        elif self.x + self.size < -200:
             actions.meteors.remove(self)
             self.delete()
-        elif self.y + self.rozmer < -200:
+        elif self.y + self.size < -200:
             actions.meteors.remove(self)
             self.delete()
+
+    def bounce(self):
+        if self.x + self.size >= window.width:
+            self.x_speed = random.randint(-350, -100)
+            return
+        if self.x - self.size <= 0:
+            self.x_speed = random.randint(100, 350)
+            return
+        if self.y - self.size <= 0:
+            self.y_speed = random.randint(100, 300)
+            return
 
     def __del__(self):
         print("Meteor smazán")
@@ -99,12 +122,12 @@ class Laser(All_objects):
 
     def __init__(self, img_file=None, speed=None, rotation=None):
 
-        super().__init__("obrazkyAST/PNG/Effects/fire01.png",
+        super().__init__("obrazkyAST/PNG/Lasers/laserBlue03.png",
                          x=ship.x, y=ship.y)
         self.anchr_x = self.width // 2
         self.anchor_y = self.height
         self.speed = 1000
-        self.rozmer = min(self.image.width, self.image.height) / 2
+        self.size = min(self.image.width, self.image.height) / 2
         self.rotation = ship.rotation
 
     def tick(self, dt):
@@ -113,7 +136,7 @@ class Laser(All_objects):
         self.y = self.y + dt * self.speed * \
             sin(pi / 2 - radians(self.rotation))
 
-        if self.y + self.rozmer > window.height + 200:
+        if self.y + self.size > window.height:
             actions.lasers.remove(self)
             self.delete()
 
@@ -137,20 +160,14 @@ class Actions():
         for meteor in self.meteors:
             meteor.tick(dt)
             distance = ((meteor.x - ship.x)**2 + (meteor.y - ship.y)**2)**0.5
-            if distance - meteor.rozmer / 2 - 43 <= 0:
+            if distance - meteor.size / 2 - 43 <= 0:
                 self.colision()
-                """
-                label = pyglet.text.Label("Prohrál jsi",
-                          font_name="Times New Roman",
-                          font_size=36,
-                          x=window.width//2, y=window.height//2,
-                          anchor_x="center", anchor_y="center")
-                """
+                
 
             for laser in self.lasers:
                 laser.tick(dt)
                 distance2 = ((meteor.x - laser.x)**2 + (meteor.y - laser.y)**2)**0.5
-                if (distance2 - meteor.rozmer) <= 0:
+                if (distance2 - meteor.size) <= 0:
                     self.lasers.remove(laser)
                     laser.delete()
                     self.meteors.remove(meteor)
@@ -165,6 +182,13 @@ class Actions():
         ship.y_speed = 0
         print("Prohrál jsi")
         print("Dosáhl jsi", self.points, "bodů")
+        """
+        self.label = pyglet.text.Label("Prohrál jsi",
+                          font_name="Times New Roman",
+                          font_size=36,
+                          x=window.width//2, y=window.height//2,
+                          anchor_x="center", anchor_y="center")
+
         while 1:
             for sym in ship.keys:
                 if sym == key.R:
@@ -179,7 +203,7 @@ class Actions():
         ship.y = 77
         pyglet.clock.schedule_interval(ticky, 1/30)
         pyglet.clock.schedule_interval(actions.add_meteor, 1/3)
-
+"""
 
 def ticky(dt):
     actions.tick(dt)
@@ -213,7 +237,7 @@ def on_draw():
     window.clear()
     bg_batch.draw()
     batch.draw()
-#    label.draw()
+#    actions.label.draw()
     
 
 ship = Spaceship()
