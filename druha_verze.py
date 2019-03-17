@@ -75,10 +75,10 @@ class Spaceship(All_objects):
 
 class Meteor(All_objects):
 
-    def __init__(self, x=None, y=None, img_file=None, x_speed=None, y_speed=None, rspeed=None, rozmer=None):
+    def __init__(self, x=None, y=None, img_file=None, x_speed=None, y_speed=None, rspeed=None):
 
         if img_file is None:
-            num = random.choice(range(1, 20))
+            num = random.choice(range(1, 16))
             img_file = ("obrazkyAST/PNG/Meteors/{}.png".format(num))
         super().__init__(img_file, x, y=window.height + 20)
 
@@ -93,26 +93,16 @@ class Meteor(All_objects):
         self.y = self.y + dt * self.y_speed
         self.rotation = self.rotation + dt * self.rspeed
 
-        if self.x + self.size > window.width + 200:
-            actions.meteors.remove(self)
-            self.delete()
-        elif self.x + self.size < -200:
-            actions.meteors.remove(self)
-            self.delete()
-        elif self.y + self.size < -200:
-            actions.meteors.remove(self)
-            self.delete()
 
     def bounce(self):
         if self.x + self.size >= window.width:
             self.x_speed = random.randint(-350, -100)
-            return
-        if self.x - self.size <= 0:
+        elif self.x - self.size <= 0:
             self.x_speed = random.randint(100, 350)
-            return
-        if self.y - self.size <= 0:
+        elif self.y + self.size >= window.height:
+            self.y_speed = random.randint(-300, -100)
+        elif self.y - self.size <= 0:
             self.y_speed = random.randint(100, 300)
-            return
 
     def __del__(self):
         print("Meteor smazán")
