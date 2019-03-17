@@ -114,7 +114,7 @@ class Laser(All_objects):
 
         super().__init__("obrazkyAST/PNG/Lasers/laserBlue03.png",
                          x=ship.x, y=ship.y)
-        self.anchr_x = self.width // 2
+        self.anchor_x = self.width // 2
         self.anchor_y = self.height
         self.speed = 1000
         self.size = min(self.image.width, self.image.height) / 2
