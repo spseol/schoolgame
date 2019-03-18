@@ -137,7 +137,8 @@ class Actions():
 
     meteors = []
     lasers = []
-    points=0
+    points = 0
+    pressR = 0
 
     def add_meteor(self, dt=None):
         self.meteors.append(Meteor())
@@ -150,7 +151,7 @@ class Actions():
         for meteor in self.meteors:
             meteor.tick(dt)
             distance = ((meteor.x - ship.x)**2 + (meteor.y - ship.y)**2)**0.5
-            if distance - meteor.size / 2 - 43 <= 0:
+            if distance - meteor.size / 2 - 40 <= 0:
                 self.colision()
                 
 
@@ -170,6 +171,7 @@ class Actions():
         pyglet.clock.unschedule(actions.add_meteor)
         ship.x_speed = 0
         ship.y_speed = 0
+        self.pressR = 1
         """
         self.label = pyglet.text.Label("Prohrál jsi, dosáhl jsi", self.points, "bodů.",
                                        font_name="Times New Roman",
@@ -184,8 +186,9 @@ class Actions():
             meteor.delete()
         ship.x = window.width / 2
         ship.y = 77
+        ship.rotation = 0
         pyglet.clock.schedule_interval(ticky, 1/30)
-        pyglet.clock.schedule_interval(actions.add_meteor, 1/3)
+        pyglet.clock.schedule_interval(actions.add_meteor, 5/3)
 
 
 def ticky(dt):
@@ -208,7 +211,7 @@ def on_key_press(sym, mod):
     ship.keys.add(sym)
     if sym == key.SPACE:
         actions.add_laser()
-    elif sym == key.R:
+    if sym == key.R and actions.pressR ==1:
         actions.reset()
 
 

@@ -1,0 +1,7 @@
+$ git fetch   #stáhne data
+$ git merge   #slouèí data
+Already up to date.
+
+$ git pull    #stáhne i slouèí data dohromady
+Already up to date.
+

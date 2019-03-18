@@ -1,0 +1,14 @@
+$ git commit
+
+hint: Waiting for your editor to close the file...
+unix2dos: converting file C:/Users/Martin/pythonveci/Git/pokus/.git/COMMIT_EDITMSG to DOS format...
+dos2unix: converting file C:/Users/Martin/pythonveci/Git/pokus/.git/COMMIT_EDITMSG to Unix format...
+[master 9dad945] Mazání
+ 1 file changed, 1 deletion(-)
+ delete mode 100644 text1.txt
+
+$ git status
+
+On branch master
+nothing to commit, working tree clean
+

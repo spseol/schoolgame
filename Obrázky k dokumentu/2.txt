@@ -1,0 +1,7 @@
+
+$ pip install virtualenv      #instalace virtuálního prostøedí
+$ __venv__/Scripts/activate   #aktivace virtuálního prostøedí
+
+
+
+

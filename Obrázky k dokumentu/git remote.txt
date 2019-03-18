@@ -1,0 +1,16 @@
+$ git clone git@github.com:okurka18/pokus.git
+Cloning into 'pokus'...
+remote: Enumerating objects: 16, done.
+remote: Total 16 (delta 0), reused 0 (delta 0), pack-reused 16
+Receiving objects: 100% (16/16), done.
+Resolving deltas: 100% (3/3), done.
+
+$ cd pokus
+
+$ git remote
+origin
+
+$ git remote -v
+origin  git@github.com:okurka18/pokus.git (fetch)
+origin  git@github.com:okurka18/pokus.git (push)
+

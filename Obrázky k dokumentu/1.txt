@@ -1,0 +1,7 @@
+
+$ python3.6 -m venv __venv__   #instalace virtuálního prostøedí
+$ __venv__/bin/activate        #aktivace virtuálního prostøedí
+
+
+
+

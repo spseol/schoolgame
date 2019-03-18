@@ -1,0 +1,8 @@
+
+$ yum install git       #instalace pro distribuci Fedory (verze 1 - 21)
+$ dnf install git       #instalace pro distribuci Fedory (verze 22 a novìjší)
+$ apt-get install git   #instalace pro distribuci Ubuntu/Debian
+
+
+
+

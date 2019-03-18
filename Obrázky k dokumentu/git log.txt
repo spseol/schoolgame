@@ -1,0 +1,19 @@
+$ git log
+commit 21490cd543b35b69b29c4cd8888751547c8f5fe5
+Author: Martin Pur <pur35081@spseol.cz>
+Date:   Tue Feb 12 15:31:00 2019 +0100
+
+    Prejmenovani
+
+commit 0349ac9fd8804042bedac570bcc440866dbdb667
+Author: Martin Pur <pur35081@spseol.cz>
+Date:   Feb Feb 12 13:46:05 2019 +0100
+
+    Mazani
+
+commit 9dad9452609aa5fa6094600979b0eefbea1ddbbf
+Author: Martin Pur <pur35081@spseol.cz>
+Date:   Tue Feb 12 13:24:44 2019 +0100
+
+    Prvni_revize
+

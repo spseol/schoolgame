@@ -1,0 +1,6 @@
+
+$ sudo port install git +svn +doc +bash_completion +gitweb
+
+
+
+

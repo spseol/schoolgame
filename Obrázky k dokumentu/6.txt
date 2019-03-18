@@ -1,0 +1,7 @@
+
+$ git init   #zaloí repozitáø v aktuálním adresáøi
+$ git clone URL (internetová adresa)   #naklonování vzdáleného repozitáøe
+
+
+
+
