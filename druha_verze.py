@@ -170,21 +170,14 @@ class Actions():
         pyglet.clock.unschedule(actions.add_meteor)
         ship.x_speed = 0
         ship.y_speed = 0
-        print("Prohrál jsi")
-        print("Dosáhl jsi", self.points, "bodů")
         """
-        self.label = pyglet.text.Label("Prohrál jsi",
-                          font_name="Times New Roman",
-                          font_size=36,
-                          x=window.width//2, y=window.height//2,
-                          anchor_x="center", anchor_y="center")
-
-        while 1:
-            for sym in ship.keys:
-                if sym == key.R:
-                    self.reset()
-
-        
+        self.label = pyglet.text.Label("Prohrál jsi, dosáhl jsi", self.points, "bodů.",
+                                       font_name="Times New Roman",
+                                       font_size=36,
+                                       x=window.width//2, y=window.height//2,
+                                       anchor_x="center", anchor_y="center",
+                                       batch=batch)
+"""        
     def reset(self):
         for meteor in self.meteors:
             self.meteors.remove(meteor)
@@ -193,7 +186,7 @@ class Actions():
         ship.y = 77
         pyglet.clock.schedule_interval(ticky, 1/30)
         pyglet.clock.schedule_interval(actions.add_meteor, 1/3)
-"""
+
 
 def ticky(dt):
     actions.tick(dt)
@@ -215,6 +208,8 @@ def on_key_press(sym, mod):
     ship.keys.add(sym)
     if sym == key.SPACE:
         actions.add_laser()
+    elif sym == key.R:
+        actions.reset()
 
 
 @window.event
@@ -229,7 +224,7 @@ def on_draw():
     batch.draw()
 #    actions.label.draw()
     
-
+    
 ship = Spaceship()
 actions = Actions()
 actions.add_meteor()
