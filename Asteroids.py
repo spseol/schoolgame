@@ -172,14 +172,14 @@ class Actions():
         ship.x_speed = 0
         ship.y_speed = 0
         self.pressR = 1
-        """
+        
         self.label = pyglet.text.Label("Prohrál jsi, dosáhl jsi", self.points, "bodů.",
                                        font_name="Times New Roman",
                                        font_size=36,
                                        x=window.width//2, y=window.height//2,
                                        anchor_x="center", anchor_y="center",
                                        batch=batch)
-"""        
+        
     def reset(self):
         for meteor in self.meteors:
             self.meteors.remove(meteor)
@@ -225,7 +225,7 @@ def on_draw():
     window.clear()
     bg_batch.draw()
     batch.draw()
-#    actions.label.draw()
+    actions.label.draw()
     
     
 ship = Spaceship()
