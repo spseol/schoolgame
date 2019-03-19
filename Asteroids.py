@@ -11,6 +11,7 @@ from math import sin, cos, radians, pi
 from pyglet.window import key
 
 window = pyglet.window.Window(1250, 1000)
+label = pyglet.graphics.Batch()
 batch = pyglet.graphics.Batch()
 bg_batch = pyglet.graphics.Batch()
 
@@ -225,7 +226,7 @@ def on_draw():
     window.clear()
     bg_batch.draw()
     batch.draw()
-    actions.label.draw()
+    label.draw()
     
     
 ship = Spaceship()
