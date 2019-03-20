@@ -182,7 +182,7 @@ class Actions():
         ship.x_speed = 0
         ship.y_speed = 0
         self.pressR = 1
-        self.text_labelu = ("Prohrál jsi, dosáhl jsi:",(str(self.points)),"bodů.")
+        self.text_labelu = "Prohrál jsi, dosáhl jsi:" + (str(self.points)) + " bodů."
         self.label = pyglet.text.Label(str(self.text_labelu),
                                        font_name="Times New Roman",
                                        font_size=36,
