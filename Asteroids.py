@@ -130,13 +130,13 @@ class Laser(All_objects):
         if self.y + self.size > window.height:
             actions.lasers.remove(self)
             self.delete()
-        if self.x + self.size > window.width:
+        elif self.x + self.size > window.width:
             actions.lasers.remove(self)
             self.delete()
-        if self.x - self.size < -1:
+        elif self.x - self.size < -1:
             actions.lasers.remove(self)
             self.delete()
-        if self.y - self.size < -1:
+        elif self.y - self.size < -1:
             actions.lasers.remove(self)
             self.delete()
 
