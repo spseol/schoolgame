@@ -111,7 +111,7 @@ class Meteor(All_objects):
 
 class Laser(All_objects):
 
-    def __init__(self, img_file=None, speed=None, rotation=None):
+    def __init__(self, img_file=None, x=None, y=None, speed=None, rotation=None):
 
         super().__init__("obrazkyAST/PNG/Lasers/laserBlue03.png",
                          x=ship.x, y=ship.y)
@@ -128,6 +128,15 @@ class Laser(All_objects):
             sin(pi / 2 - radians(self.rotation))
 
         if self.y + self.size > window.height:
+            actions.lasers.remove(self)
+            self.delete()
+        if self.x + self.size > window.width:
+            actions.lasers.remove(self)
+            self.delete()
+        if self.x - self.size < -1:
+            actions.lasers.remove(self)
+            self.delete()
+        if self.y - self.size < -1:
             actions.lasers.remove(self)
             self.delete()
 
@@ -152,7 +161,7 @@ class Actions():
         for meteor in self.meteors:
             meteor.tick(dt)
             distance = ((meteor.x - ship.x)**2 + (meteor.y - ship.y)**2)**0.5
-            if distance - meteor.size / 2 - 40 <= 0:
+            if distance - meteor.size / 2 - 45 <= 0:
                 self.colision()
                 
 
@@ -177,6 +186,7 @@ class Actions():
         self.label = pyglet.text.Label(str(self.text_labelu),
                                        font_name="Times New Roman",
                                        font_size=36,
+                                       color = (255, 255, 255, 255),
                                        x=window.width // 2,
                                        y=window.height // 2,
                                        anchor_x="center", anchor_y="center",
@@ -190,7 +200,7 @@ class Actions():
             self.meteors.remove(meteor)
             meteor.delete()
         pyglet.clock.schedule_interval(ticky, 1/30)
-        pyglet.clock.schedule_interval(actions.add_meteor, 5/3)
+        pyglet.clock.schedule_interval(actions.add_meteor, 10/3)
 
 
 def ticky(dt):
@@ -236,5 +246,5 @@ actions = Actions()
 actions.add_meteor()
 actions.add_meteor()
 pyglet.clock.schedule_interval(ticky, 1 / 30)
-pyglet.clock.schedule_interval(actions.add_meteor, 5 / 3)
+pyglet.clock.schedule_interval(actions.add_meteor, 10 / 3)
 pyglet.app.run()
