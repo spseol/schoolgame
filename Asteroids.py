@@ -173,21 +173,22 @@ class Actions():
         ship.x_speed = 0
         ship.y_speed = 0
         self.pressR = 1
-        
-        self.label = pyglet.text.Label("Prohrál jsi, dosáhl jsi", self.points, "bodů.",
+        self.text_labelu = ("Prohrál jsi, dosáhl jsi:",(str(self.points)),"bodů.")
+        self.label = pyglet.text.Label(str(self.text_labelu),
                                        font_name="Times New Roman",
                                        font_size=36,
-                                       x=window.width//2, y=window.height//2,
+                                       x=window.width // 2,
+                                       y=window.height // 2,
                                        anchor_x="center", anchor_y="center",
-                                       batch=batch)
-        
+                                       batch=label)
     def reset(self):
-        for meteor in self.meteors:
-            self.meteors.remove(meteor)
-            meteor.delete()
+        self.label.delete()
         ship.x = window.width / 2
         ship.y = 77
         ship.rotation = 0
+        for meteor in self.meteors:
+            self.meteors.remove(meteor)
+            meteor.delete()
         pyglet.clock.schedule_interval(ticky, 1/30)
         pyglet.clock.schedule_interval(actions.add_meteor, 5/3)
 
@@ -214,6 +215,7 @@ def on_key_press(sym, mod):
         actions.add_laser()
     if sym == key.R and actions.pressR ==1:
         actions.reset()
+        actions.pressR = 0
 
 
 @window.event
@@ -234,5 +236,5 @@ actions = Actions()
 actions.add_meteor()
 actions.add_meteor()
 pyglet.clock.schedule_interval(ticky, 1 / 30)
-pyglet.clock.schedule_interval(actions.add_meteor, 10 / 3)
+pyglet.clock.schedule_interval(actions.add_meteor, 5 / 3)
 pyglet.app.run()
