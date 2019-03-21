@@ -11,7 +11,8 @@ from math import sin, cos, radians, pi
 from pyglet.window import key
 
 window = pyglet.window.Window(1250, 1000)
-label = pyglet.graphics.Batch()
+label1 = pyglet.graphics.Batch()
+label2 = pyglet.graphics.Batch()
 batch = pyglet.graphics.Batch()
 bg_batch = pyglet.graphics.Batch()
 
@@ -184,26 +185,27 @@ class Actions():
         self.pressR = 1
         self.text_labelu1 = "Prohrál jsi, dosáhl jsi:" + (str(self.points)) + " bodů."
         self.text_labelu2 = "Pro další hru stiskni R"
-        self.label = pyglet.text.Label(str(self.text_labelu1),
+        self.label1 = pyglet.text.Label(str(self.text_labelu1),
                                        font_name="Times New Roman",
                                        font_size=36,
                                        color = (255, 0, 0, 255),
                                        x=window.width // 2,
                                        y=window.height // 2,
                                        anchor_x="center", anchor_y="center",
-                                       batch=label)
-        self.label = pyglet.text.Label(str(self.text_labelu2),
+                                       batch=label1)
+        self.label2 = pyglet.text.Label(str(self.text_labelu2),
                                        font_name="Times New Roman",
                                        font_size=28,
                                        color = (255, 0, 0, 255),
                                        x=window.width // 2,
                                        y=window.height // 2 - 55,
                                        anchor_x="center", anchor_y="center",
-                                       batch=label)
+                                       batch=label2)
         
         
     def reset(self):
-        self.label.delete()
+        self.label1.delete()
+        self.label2.delete()
         ship.x = window.width / 2
         ship.y = 77
         ship.rotation = 0
@@ -250,7 +252,8 @@ def on_draw():
     window.clear()
     bg_batch.draw()
     batch.draw()
-    label.draw()
+    label1.draw()
+    label2.draw()
     
     
 ship = Spaceship()
