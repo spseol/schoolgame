@@ -207,7 +207,7 @@ class Actions():
         ship.x = window.width / 2
         ship.y = 77
         ship.rotation = 0
-        while len(actions.meteors) < 0:
+        while len(self.meteors) < 0:
             self.meteors.remove(meteor)
             meteor.delete()
         pyglet.clock.schedule_interval(ticky, 1/100)
