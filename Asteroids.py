@@ -117,7 +117,7 @@ class Laser(All_objects):
                          x=ship.x, y=ship.y)
         self.anchor_x = self.width // 2
         self.anchor_y = self.height
-        self.speed = 1000
+        self.speed = 800
         self.size = min(self.image.width, self.image.height) / 2
         self.rotation = ship.rotation
 
@@ -182,24 +182,35 @@ class Actions():
         ship.x_speed = 0
         ship.y_speed = 0
         self.pressR = 1
-        self.text_labelu = "Prohrál jsi, dosáhl jsi:" + (str(self.points)) + " bodů."
-        self.label = pyglet.text.Label(str(self.text_labelu),
+        self.text_labelu1 = "Prohrál jsi, dosáhl jsi:" + (str(self.points)) + " bodů."
+        self.text_labelu2 = "Pro další hru stiskni R"
+        self.label = pyglet.text.Label(str(self.text_labelu1),
                                        font_name="Times New Roman",
                                        font_size=36,
-                                       color = (255, 255, 255, 255),
+                                       color = (255, 0, 0, 255),
                                        x=window.width // 2,
                                        y=window.height // 2,
                                        anchor_x="center", anchor_y="center",
                                        batch=label)
+        self.label = pyglet.text.Label(str(self.text_labelu2),
+                                       font_name="Times New Roman",
+                                       font_size=28,
+                                       color = (255, 0, 0, 255),
+                                       x=window.width // 2,
+                                       y=window.height // 2 - 55,
+                                       anchor_x="center", anchor_y="center",
+                                       batch=label)
+        
+        
     def reset(self):
         self.label.delete()
         ship.x = window.width / 2
         ship.y = 77
         ship.rotation = 0
-        for meteor in self.meteors:
+        while len(actions.meteors) < 0:
             self.meteors.remove(meteor)
             meteor.delete()
-        pyglet.clock.schedule_interval(ticky, 1/30)
+        pyglet.clock.schedule_interval(ticky, 1/100)
         pyglet.clock.schedule_interval(actions.add_meteor, 10/3)
 
 
@@ -226,6 +237,7 @@ def on_key_press(sym, mod):
     if sym == key.R and actions.pressR ==1:
         actions.reset()
         actions.pressR = 0
+        actions.points = 0
 
 
 @window.event
@@ -245,6 +257,6 @@ ship = Spaceship()
 actions = Actions()
 actions.add_meteor()
 actions.add_meteor()
-pyglet.clock.schedule_interval(ticky, 1 / 30)
+pyglet.clock.schedule_interval(ticky, 1 / 100)
 pyglet.clock.schedule_interval(actions.add_meteor, 10 / 3)
 pyglet.app.run()
