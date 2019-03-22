@@ -175,7 +175,7 @@ class Actions():
                     self.meteors.remove(meteor)
                     meteor.delete()
                     self.points = self.points + 10
-                    
+
 
     def colision(self):
         pyglet.clock.unschedule(ticky)
@@ -201,16 +201,16 @@ class Actions():
                                        y=window.height // 2 - 55,
                                        anchor_x="center", anchor_y="center",
                                        batch=label2)
-        
-        
+
+
     def reset(self):
         self.label1.delete()
         self.label2.delete()
         ship.x = window.width / 2
         ship.y = 77
         ship.rotation = 0
-        while len(self.meteors) < 0:
-            self.meteors.remove(meteor)
+        while (len(self.meteors)) > 0:
+            meteor=self.meteors.pop()
             meteor.delete()
         pyglet.clock.schedule_interval(ticky, 1/100)
         pyglet.clock.schedule_interval(actions.add_meteor, 10/3)
