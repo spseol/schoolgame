@@ -25,14 +25,20 @@ class All_objects(pyglet.sprite.Sprite):
         self.image_load.anchor_x = self.image_load.width // 2
         self.image_load.anchor_y = self.image_load.height // 2
         # z obrázku vytvořím sprite
-        super().__init__(self.image_load,  batch=batch)
+        super().__init__(self.image_load, batch=batch)
         self.x = x if x is not None else random.randint(0, window.width)
         self.y = y if y is not None else random.randint(0, window.height)
 
 
 class Spaceship(All_objects):
 
-    def __init__(self, x=None, y=None, x_speed=None, y_speed=None, rotation=None):
+    def __init__(
+            self,
+            x=None,
+            y=None,
+            x_speed=None,
+            y_speed=None,
+            rotation=None):
 
         self.keys = set()
         super().__init__(
@@ -63,7 +69,7 @@ class Spaceship(All_objects):
                     (-cos(pi / 2 - radians(self.rotation)))
                 self.y = self.y + dt * self.y_speed * \
                     (-sin(pi / 2 - radians(self.rotation)))
-                    
+
     def bounce(self):
         if self.x + self.size > window.width:
             self.x = window.width - self.size
@@ -77,15 +83,24 @@ class Spaceship(All_objects):
 
 class Meteor(All_objects):
 
-    def __init__(self, x=None, y=None, img_file=None, x_speed=None, y_speed=None, rspeed=None):
+    def __init__(
+            self,
+            x=None,
+            y=None,
+            img_file=None,
+            x_speed=None,
+            y_speed=None,
+            rspeed=None):
 
         if img_file is None:
             num = random.choice(range(1, 16))
             img_file = ("obrazkyAST/PNG/Meteors/{}.png".format(num))
         super().__init__(img_file, x, y=window.height + 20)
 
-        self.x_speed = x_speed if x_speed is not None else random.randint(30, 180)
-        self.y_speed = y_speed if y_speed is not None else random.randint(-180, -30)
+        self.x_speed = x_speed if x_speed is not None else random.randint(
+            30, 180)
+        self.y_speed = y_speed if y_speed is not None else random.randint(
+            -180, -30)
         self.rspeed = rspeed if rspeed is not None else random.randint(-50, 50)
         self.size = min(self.image.width, self.image.height) / 2
 
@@ -94,7 +109,6 @@ class Meteor(All_objects):
         self.x = self.x + dt * self.x_speed
         self.y = self.y + dt * self.y_speed
         self.rotation = self.rotation + dt * self.rspeed
-
 
     def bounce(self):
         if self.x + self.size >= window.width:
@@ -112,7 +126,13 @@ class Meteor(All_objects):
 
 class Laser(All_objects):
 
-    def __init__(self, img_file=None, x=None, y=None, speed=None, rotation=None):
+    def __init__(
+            self,
+            img_file=None,
+            x=None,
+            y=None,
+            speed=None,
+            rotation=None):
 
         super().__init__("obrazkyAST/PNG/Lasers/laserBlue03.png",
                          x=ship.x, y=ship.y)
@@ -144,6 +164,7 @@ class Laser(All_objects):
     def __del__(self):
         print("Laser smazán")
 
+
 class Actions():
 
     meteors = []
@@ -162,13 +183,13 @@ class Actions():
         for meteor in self.meteors:
             meteor.tick(dt)
             distance = ((meteor.x - ship.x)**2 + (meteor.y - ship.y)**2)**0.5
-            if distance - meteor.size / 2 - 45 <= 0:
+            if distance - meteor.size / 2 - 40 <= 0:
                 self.colision()
-                
 
             for laser in self.lasers:
                 laser.tick(dt)
-                distance2 = ((meteor.x - laser.x)**2 + (meteor.y - laser.y)**2)**0.5
+                distance2 = ((meteor.x - laser.x)**2 +
+                             (meteor.y - laser.y)**2)**0.5
                 if (distance2 - meteor.size) <= 0:
                     self.lasers.remove(laser)
                     laser.delete()
@@ -176,32 +197,31 @@ class Actions():
                     meteor.delete()
                     self.points = self.points + 10
 
-
     def colision(self):
         pyglet.clock.unschedule(ticky)
         pyglet.clock.unschedule(actions.add_meteor)
         ship.x_speed = 0
         ship.y_speed = 0
         self.pressR = 1
-        self.text_labelu1 = "Prohrál jsi, dosáhl jsi:" + (str(self.points)) + " bodů."
+        self.text_labelu1 = "Prohrál jsi, dosáhl jsi:" + \
+            (str(self.points)) + " bodů."
         self.text_labelu2 = "Pro další hru stiskni R"
         self.label1 = pyglet.text.Label(str(self.text_labelu1),
-                                       font_name="Times New Roman",
-                                       font_size=36,
-                                       color = (255, 0, 0, 255),
-                                       x=window.width // 2,
-                                       y=window.height // 2,
-                                       anchor_x="center", anchor_y="center",
-                                       batch=label1)
+                                        font_name="Times New Roman",
+                                        font_size=36,
+                                        color=(255, 0, 0, 255),
+                                        x=window.width // 2,
+                                        y=window.height // 2,
+                                        anchor_x="center", anchor_y="center",
+                                        batch=label1)
         self.label2 = pyglet.text.Label(str(self.text_labelu2),
-                                       font_name="Times New Roman",
-                                       font_size=28,
-                                       color = (255, 0, 0, 255),
-                                       x=window.width // 2,
-                                       y=window.height // 2 - 55,
-                                       anchor_x="center", anchor_y="center",
-                                       batch=label2)
-
+                                        font_name="Times New Roman",
+                                        font_size=28,
+                                        color=(255, 0, 0, 255),
+                                        x=window.width // 2,
+                                        y=window.height // 2 - 55,
+                                        anchor_x="center", anchor_y="center",
+                                        batch=label2)
 
     def reset(self):
         self.label1.delete()
@@ -210,15 +230,16 @@ class Actions():
         ship.y = 77
         ship.rotation = 0
         while (len(self.meteors)) > 0:
-            meteor=self.meteors.pop()
+            meteor = self.meteors.pop()
             meteor.delete()
-        pyglet.clock.schedule_interval(ticky, 1/100)
-        pyglet.clock.schedule_interval(actions.add_meteor, 10/3)
+        pyglet.clock.schedule_interval(ticky, 1 / 100)
+        pyglet.clock.schedule_interval(actions.add_meteor, 10 / 3)
 
 
 def ticky(dt):
     actions.tick(dt)
     ship.tick(dt)
+
 
 bg = pyglet.image.load("obrazkyAST/Backgrounds/blue.png")
 x = 0
@@ -231,12 +252,13 @@ while x < window.width:
         y += bg.height
     x += bg.width
 
+
 @window.event
 def on_key_press(sym, mod):
     ship.keys.add(sym)
     if sym == key.SPACE:
         actions.add_laser()
-    if sym == key.R and actions.pressR ==1:
+    if sym == key.R and actions.pressR == 1:
         actions.reset()
         actions.pressR = 0
         actions.points = 0
@@ -254,8 +276,8 @@ def on_draw():
     batch.draw()
     label1.draw()
     label2.draw()
-    
-    
+
+
 ship = Spaceship()
 actions = Actions()
 actions.add_meteor()
